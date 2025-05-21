@@ -14,14 +14,20 @@
       padding: 1rem;
       background-color: #f0f0f0;
     }
+    
+    .subtitle {
+      margin-top: -0.25rem;
+      margin-bottom: 1.5rem;
+      color: #555;
+    }
 
     label {
       display: inline-block;
       padding: 1rem 1.5rem;
       background: linear-gradient(to bottom, #007bff, #006ce0);
-      color: white;
       border-radius: 8px;
       cursor: pointer;
+      color: white;
     }
 
     img {
@@ -31,18 +37,10 @@
       border-radius: 20px;
     }
 
-    .subtitle {
-      font-size: 1rem;
-      color: #555;
-      margin-top: -0.5rem;
-      margin-bottom: 1.5rem;
-    }
-
     #predictionText {
       margin-top: 1rem;
       font-size: 1.1rem;
       color: #333;
-      min-height: 1.5em;
     }
   </style>
 </head>
@@ -72,7 +70,6 @@
       reader.onload = function (loadEvent) {
         preview.src = loadEvent.target.result;
         preview.style.display = "block";
-
 
         const image = new FormData();
         image.append("file", file);
