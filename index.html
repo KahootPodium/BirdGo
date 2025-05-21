@@ -84,7 +84,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.predictions?.length > 0) {
-            predictionText.textContent = data.predictions[0].class.toLowerCase().split(" ") .map(w => w.charAt(0).toUpperCase() + w.slice(1)) .join(" ");
+            predictionText.textContent = data.predictions[0].class.toLowerCase().split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
             predictionText.style.opacity = "1";
           } 
         
