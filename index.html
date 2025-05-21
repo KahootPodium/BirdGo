@@ -78,25 +78,27 @@
         image.append("file", file);
 
         Promise.all([
-          fetch("https://detect.roboflow.com/bird-species-detector/851?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=85", {
+          fetch("https://detect.roboflow.com/bird-species-detector/851?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=90", {
             method: "POST",
             body: image,
           }).then(response => response.json()),
 
-          fetch("https://detect.roboflow.com/bird-identification-v2/1?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=85", {
+          fetch("https://detect.roboflow.com/bird-identification-v2/1?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=90", {
             method: "POST",
             body: image,
           }).then(response => response.json()),
 
-          fetch("https://detect.roboflow.com/bird_project-opnxf/2?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=85", {
+          fetch("https://detect.roboflow.com/bird_project-opnxf/2?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=90", {
             method: "POST",
             body: image,
           }).then(response => response.json())
         ])
 
         .then((data) => {
-          const confidences = data.map(result => result.predictions?.[0]?.confidence ?? 0);
+          const confidences = data.map(result => Number(result.predictions?.[0]?.confidence.toFixed(2)) ?? 0);
           const bestPrediction = data[confidences.indexOf(Math.max(...confidences))].predictions?.[0];
+          console.log(confidences)
+          console.log(data)
 
           predictionText.textContent = bestPrediction ? bestPrediction.class.toLowerCase().split(/[- ]/).map(w => w[0].toUpperCase() + w.slice(1)).join(" ") : "No species found";
           predictionText.style.opacity = "1"
