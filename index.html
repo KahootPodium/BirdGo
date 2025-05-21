@@ -97,8 +97,6 @@
         .then((data) => {
           const confidences = data.map(result => Number(result.predictions?.[0]?.confidence.toFixed(2)) ?? 0);
           const bestPrediction = data[confidences.indexOf(Math.max(...confidences))].predictions?.[0];
-          console.log(confidences)
-          console.log(data)
 
           predictionText.textContent = bestPrediction ? bestPrediction.class.toLowerCase().split(/[- ]/).map(w => w[0].toUpperCase() + w.slice(1)).join(" ") : "No species found";
           predictionText.style.opacity = "1"
