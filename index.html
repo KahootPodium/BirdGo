@@ -16,8 +16,8 @@
     }
     
     .subtitle {
-      margin-top: -0.5rem;
-      margin-bottom: 1.5rem;
+      margin-top: -0.25rem;
+      margin-bottom: 1.6rem;
       color: #555;
     }
 
@@ -31,7 +31,7 @@
     }
 
     img {
-      margin: 1.25rem auto;
+      margin: 1.5rem auto;
       max-width: 100%;
       width: 500px;
       border-radius: 20px;
@@ -41,6 +41,7 @@
       margin-top: 1rem;
       font-size: 1.1rem;
       color: #333;
+      transition: opacity 1s ease-in-out;
     }
   </style>
 </head>
@@ -62,8 +63,6 @@
     const predictionText = document.getElementById("predictionText");
 
     input.addEventListener("change", function () {
-      predictionText.textContent = "";
-
       const file = input.files[0];
       const reader = new FileReader();
 
@@ -71,16 +70,22 @@
         preview.src = loadEvent.target.result;
         preview.style.display = "block";
 
+        predictionText.textContent = "";
+        predictionText.style.opacity = "0";
+
         const image = new FormData();
         image.append("file", file);
 
-        fetch("https://detect.roboflow.com/bird-v2/2?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=80&overlap=100", {
+        fetch("https://detect.roboflow.com/bird-v2/2?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=80", {
           method: "POST",
           body: image,
         })
 
         .then(response => response.json())
-        .then(data => predictionText.textContent = data.predictions?.length > 0 ? data.predictions[0].class.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join(" ") : "No species found")
+        .then(data => {
+          predictionText.textContent = data.predictions?.length > 0 ? data.predictions[0].class.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join(" ") : "No species found";
+          predictionText.style.opacity = "1"
+        })
       };
 
     reader.readAsDataURL(file);
