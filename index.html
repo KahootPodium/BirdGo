@@ -76,15 +76,29 @@
         const image = new FormData();
         image.append("file", file);
 
-        fetch("https://detect.roboflow.com/bird-v2/2?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=80", {
+        fetch("https://detect.roboflow.com/bird-species-detector/851?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=80", {
           method: "POST",
           body: image,
         })
 
         .then(response => response.json())
         .then(data => {
-          predictionText.textContent = data.predictions?.length > 0 ? data.predictions[0].class.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join(" ") : "No species found";
-          predictionText.style.opacity = "1"
+          if (data.predictions?.length > 0) {
+            predictionText.textContent = data.predictions[0].class.toLowerCase().split(" ") .map(w => w.charAt(0).toUpperCase() + w.slice(1)) .join(" ");
+            predictionText.style.opacity = "1";
+          } 
+        
+          else {
+            fetch("https://detect.roboflow.com/bird-v2/2?api_key=Q1XxRSAsa7zJHnNtqJPs&confidence=80", {
+              method: "POST",
+              body: image,
+            })
+
+            .then(response => response.json())
+            .then(data => {
+              predictionText.textContent = data.predictions?.length > 0 ? data.predictions[0].class.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join(" ") : "No species found";
+              predictionText.style.opacity = "1";})
+          }
         })
       };
 
